@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>doodle classifier</title>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>doodle classifier</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.8.0"> </script>
-	<script src="loadbinary.js"></script>
-	<script src="data.js"></script>
-	<script src="classifier.js"></script>
-	<script src="sketch.js"></script>
-	<style>
-	body {
-		background-color: #AAA;
-	}
-	button {
-		font-size: 24pt;
-		margin: 10px;
-	}
-	</style>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.8.0">
+  </script>
+  <script src="loadbinary.js"></script>
+  <script src="data.js"></script>
+  <script src="classifier.js"></script>
+  <script src="sketch.js"></script>
+  <style>
+    body {
+      background-color: #AAA;
+    }
+
+    button {
+      font-size: 24pt;
+      margin: 10px;
+    }
+  </style>
 </head>
+
 <body>
-	<button id="train">train</button>
-	<button id="test">test</button>
-	<button id="guess">guess</button>
-	<button id="clear">clear</button>
+  <button id="train">train</button>
+  <button id="test">test</button>
+  <button id="guess">guess</button>
+  <button id="clear">clear</button>
 </body>
+
 </html>
