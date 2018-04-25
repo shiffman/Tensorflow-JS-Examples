@@ -2,9 +2,12 @@
 
 This repo is experimental and in progress. It is an "MNIST"-style classification example using the [Google QuickDraw dataset](https://quickdraw.withgoogle.com/data), [p5js](https://p5js.org/), and [tensorflow.js](https://js.tensorflow.org). It is loosely based on the [tfjs MNIST example](https://github.com/tensorflow/tfjs-examples/tree/master/mnist).
 
-## RoadMap
+## Reference
+* [JS Doodle Classifier video tutorials](https://www.youtube.com/watch?v=pqY_Tn2SIVA&list=PLRqwX-V7Uu6Zs14zKVuTuit6jApJgoYZQ)
+* [ml4a ofx Doodle Classifier](https://ml4a.github.io/guides/DoodleClassifier/)
 
-* [ ] Simplify model removing convolutional layers. The idea is for this to be a dropdead simple example that I can use to explain tensorflow.js. I'd like to cover convolutional neural networks as a secondary example.
+## RoadMap
+* [ ] Simplify model removing convolutional layers. The idea is for this to be a dropdead simple example that I can use to explain tensorflow.js and the layers API. I'd like to cover convolutional neural networks as a secondary example.
 * [ ] Incorporate testing data. At the moment [no any validation / testing data](https://github.com/shiffman/Tensorflow-JS-Doodle-Classifier/blob/master/classifier.js#L53) is included during training. For clarity of the example I might like to run the testing as a separate function. What do the results mean me if I give it `null` data?
 * [ ] Guess user drawings in real-time.
 * [ ] Train with a much larger dataset.
