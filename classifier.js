@@ -44,10 +44,7 @@ class Classifier {
   async train(data) {
     const batchSize = 100;
     const iterations = data.total / batchSize;
-    console.log(iterations);
-
     for (let i = 0; i < iterations; i++) {
-      console.log("Iteration: " + i);
       const batch = data.getTrainBatch(batchSize, i * batchSize);
       const batchData = batch.data.reshape([batchSize, 28, 28, 1]);
       const batchLabels = batch.labels;
@@ -60,7 +57,7 @@ class Classifier {
       const history = await this.model.fit(batchData, batchLabels, options);
       const loss = history.history.loss[0];
       const accuracy = history.history.acc[0];
-      console.log(loss, accuracy);
+      console.log(`batch: ${i} loss: ${nf(loss, 2, 2)} accuracy: ${nf(accuracy, 2, 2)}`);
     }
   }
 }
