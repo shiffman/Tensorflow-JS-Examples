@@ -73,7 +73,6 @@ function setup() {
   });
 }
 
-
 function draw() {
   strokeWeight(8);
   stroke(0);

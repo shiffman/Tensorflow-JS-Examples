@@ -17,7 +17,6 @@ class DoodleData {
     this.loadingOffset += data.length / IMAGE_SIZE;
   }
 
-
   shuffle() {
     const order = tf.util.createShuffledIndices(this.total);
     const shuffledData = new Uint8Array(this.trainingData.length);
@@ -34,8 +33,6 @@ class DoodleData {
     this.trainingData = shuffledData;
     this.trainingLabels = shuffledLabels;
   }
-
-
 
   getTrainBatch(batchSize, offset) {
     let batch = {};

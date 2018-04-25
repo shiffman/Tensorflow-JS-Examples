@@ -1,3 +1,5 @@
+// Based on: https://github.com/tensorflow/tfjs-examples/tree/master/mnist
+
 class Classifier {
 
   constructor() {
