@@ -16,14 +16,25 @@ let data = {
 function setup() {
   createCanvas(400, 400);
   nn = new NeuralNetwork(2, 4, 1);
-  nn.train(data);
+
+  let counter = 0;
+  nn.train(data, finished);
+
+  function finished() {
+    console.log('Training pass: ' + counter);
+    counter++;
+    nn.train(data, finished);
+  }
+
+
+
 }
 
 function draw() {
   background(0);
 
 
-  let resolution = 10;
+  let resolution = 50;
   let cols = width / resolution;
   let rows = height / resolution;
   for (let i = 0; i < cols; i++) {

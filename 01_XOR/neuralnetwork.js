@@ -23,17 +23,20 @@ class NeuralNetwork {
   }
 
   predict(inputs) {
-    const xs = tf.tensor2d([inputs]);
-    return this.model.predict(xs).get();
+    return tf.tidy(() => {
+      const xs = tf.tensor2d([inputs]);
+      return this.model.predict(xs).get();
+    });
   }
 
-  async train(data) {
+  async train(data, callback) {
+    // return tf.tidy(() => {
     const xs = tf.tensor2d(data.inputs);
     const ys = tf.tensor2d(data.targets);
-    console.log('start training.')
     await this.model.fit(xs, ys, {
-      epochs: 1000
+      epochs: 10
     });
-    console.log('finish training.');
+    callback();
+    // });
   }
 }
