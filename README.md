@@ -1,5 +1,9 @@
-# tensorflow.js Doodle Classifer example
+# tensorflow.js Examples
 
+
+## XOR vanilla neural network
+
+## Doodle Classifier
 This repo is experimental and in progress. It is an "MNIST"-style classification example using the [Google QuickDraw dataset](https://quickdraw.withgoogle.com/data), [p5js](https://p5js.org/), and [tensorflow.js](https://js.tensorflow.org). It is loosely based on the [tfjs MNIST example](https://github.com/tensorflow/tfjs-examples/tree/master/mnist).
 
 ## Reference
@@ -13,4 +17,3 @@ This repo is experimental and in progress. It is an "MNIST"-style classification
 * [ ] Train with a much larger dataset.
 * [ ] Save model using local storage or to JSON file.
 * [ ] Bring the idea of a higher level `Classifier` class that wraps keras layers into [ml5](https://ml5js.github.io/).
-
