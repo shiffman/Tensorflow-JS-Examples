@@ -1,4 +1,14 @@
-// Based on: https://github.com/tensorflow/tfjs-examples/tree/master/mnist
+class Batch {
+  constructor() {
+    // this.shape = ??;
+    this.data = [];
+  }
+
+  add(data) {
+    this.data.push(data);
+  }
+}
+
 
 class NeuralNetwork {
 
@@ -23,20 +33,27 @@ class NeuralNetwork {
   }
 
   predict(inputs) {
-    return tf.tidy(() => {
-      const xs = tf.tensor2d([inputs]);
-      return this.model.predict(xs).get();
-    });
+    if (inputs instanceof Batch) {
+      return tf.tidy(() => {
+        const xs = tf.tensor2d(inputs.data);
+        return this.model.predict(xs).dataSync();
+      });
+    } else {
+      return tf.tidy(() => {
+        const xs = tf.tensor2d([inputs]);
+        return this.model.predict(xs).dataSync();
+      });
+    }
   }
 
-  async train(data, callback) {
-    // return tf.tidy(() => {
+  async train(data, epochs, callback) {
     const xs = tf.tensor2d(data.inputs);
     const ys = tf.tensor2d(data.targets);
     await this.model.fit(xs, ys, {
-      epochs: 10
+      epochs: epochs
     });
+    xs.dispose();
+    ys.dispose();
     callback();
-    // });
   }
 }
