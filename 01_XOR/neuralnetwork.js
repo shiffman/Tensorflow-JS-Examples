@@ -26,8 +26,13 @@ class NeuralNetwork {
     });
     this.model.add(hiddenLayer);
     this.model.add(outputLayer);
+
+    const LEARNING_RATE = 0.5;
+    const optimizer = tf.train.sgd(LEARNING_RATE);
+
     this.model.compile({
-      optimizer: 'sgd',
+      optimizer: optimizer,
+      // optimizer: 'sgd',
       loss: 'meanSquaredError'
     });
   }
