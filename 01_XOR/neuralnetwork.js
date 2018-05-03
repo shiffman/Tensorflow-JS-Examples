@@ -55,7 +55,8 @@ class NeuralNetwork {
     const xs = tf.tensor2d(data.inputs);
     const ys = tf.tensor2d(data.targets);
     await this.model.fit(xs, ys, {
-      epochs: epochs
+      epochs: epochs,
+      shuffle: true
     });
     xs.dispose();
     ys.dispose();
