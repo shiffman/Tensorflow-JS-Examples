@@ -23,7 +23,7 @@ function train() {
 
 function finished() {
   counter++;
-  statusP.html('Training pass: ' + counter + '<br>FrameRate: ' + floor(frameRate()));
+  statusP.html('training pass: ' + counter + '<br>framerate: ' + floor(frameRate()));
   setTimeout(train, 10);
 }
 
@@ -37,9 +37,6 @@ function setup() {
 }
 
 function draw() {
-  // if (training) {
-  //   console.log('training');
-  // } else {
   background(0);
   let batch = new Batch();
   let resolution = 50;
