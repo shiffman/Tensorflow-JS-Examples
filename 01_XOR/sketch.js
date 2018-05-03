@@ -17,23 +17,14 @@ let counter = 0;
 
 let training = true;
 
-async function train() {
-  let bigData = {
-    inputs: [],
-    targets: []
-  }
-  for (let i = 0; i < 500; i++) {
-    let index = floor(random(data.inputs.length));
-    bigData.inputs.push(data.inputs[index]);
-    bigData.targets.push(data.targets[index]);
-  }
-  nn.train(bigData, 1, finished);
+function train() {
+  nn.train(data, 10, finished);
 }
 
 function finished() {
   counter++;
   statusP.html('Training pass: ' + counter + '<br>FrameRate: ' + floor(frameRate()));
-  setTimeout(train, 1);
+  setTimeout(train, 10);
 }
 
 let statusP;
@@ -43,10 +34,6 @@ function setup() {
   nn = new NeuralNetwork(2, 2, 1);
   train();
   statusP = createP('0');
-
-
-
-
 }
 
 function draw() {
