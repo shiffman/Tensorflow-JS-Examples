@@ -1,5 +1,21 @@
+// Data helper classes
+
+// class ml5.Data
+
+// ml5.Data?
+class Data {
+  // Need to deal with shape
+  constructor(data) {
+    this.xs = tf.tensor2d(data.inputs);
+    this.ys = tf.tensor2d(data.targets);
+  }
+}
+
+
+// Helper class for a Batch of Data: ml5.Batch
 class Batch {
   constructor() {
+    // Need to deal with shape
     // this.shape = ??;
     this.data = [];
   }
@@ -12,7 +28,7 @@ class Batch {
 
 class NeuralNetwork {
 
-  constructor(inputs, hidden, outputs) {
+  constructor(inputs, hidden, outputs, lr) {
     this.model = tf.sequential();
     const hiddenLayer = tf.layers.dense({
       units: hidden,
@@ -21,13 +37,14 @@ class NeuralNetwork {
     });
     const outputLayer = tf.layers.dense({
       units: outputs,
-      inputShape: [hidden],
+      // inferred
+      // inputShape: [hidden],
       activation: 'sigmoid'
     });
     this.model.add(hiddenLayer);
     this.model.add(outputLayer);
 
-    const LEARNING_RATE = 0.5;
+    const LEARNING_RATE = lr || 0.5;
     const optimizer = tf.train.sgd(LEARNING_RATE);
 
     this.model.compile({
@@ -38,28 +55,46 @@ class NeuralNetwork {
   }
 
   predict(inputs) {
-    if (inputs instanceof Batch) {
-      return tf.tidy(() => {
-        const xs = tf.tensor2d(inputs.data);
-        return this.model.predict(xs).dataSync();
-      });
+    return tf.tidy(() => {
+      let data;
+      if (inputs instanceof Batch) {
+        data = inputs.data;
+      } else {
+        data = [inputs];
+      }
+      const xs = tf.tensor2d(data);
+      return this.model.predict(xs).dataSync();
+    });
+  }
+
+  setTrainingData(data) {
+    if (data instanceof Data) {
+      this.trainingData = data;
     } else {
-      return tf.tidy(() => {
-        const xs = tf.tensor2d([inputs]);
-        return this.model.predict(xs).dataSync();
-      });
+      this.trainingData = new Data(data);
     }
   }
 
-  async train(data, epochs, callback) {
-    const xs = tf.tensor2d(data.inputs);
-    const ys = tf.tensor2d(data.targets);
+  async train(callback, epochs, data) {
+    let xs, ys;
+    if (data) {
+      xs = tf.tensor2d(data.inputs);
+      ys = tf.tensor2d(data.targets);
+    } else if (this.trainingData) {
+      xs = this.trainingData.xs;
+      ys = this.trainingData.ys;
+    } else {
+      console.log("I have no data!");
+      return;
+    }
     await this.model.fit(xs, ys, {
-      epochs: epochs,
+      epochs: epochs || 1,
       shuffle: true
     });
-    xs.dispose();
-    ys.dispose();
+    if (data) {
+      xs.dispose();
+      ys.dispose();
+    }
     callback();
   }
 }

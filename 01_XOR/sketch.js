@@ -18,13 +18,13 @@ let counter = 0;
 let training = true;
 
 function train() {
-  nn.train(data, 10, finished);
+  nn.train(finished);
 }
 
 function finished() {
   counter++;
   statusP.html('training pass: ' + counter + '<br>framerate: ' + floor(frameRate()));
-  setTimeout(train, 10);
+  train();
 }
 
 let statusP;
@@ -32,6 +32,7 @@ let statusP;
 function setup() {
   createCanvas(400, 400);
   nn = new NeuralNetwork(2, 2, 1);
+  nn.setTrainingData(data);
   train();
   statusP = createP('0');
 }
