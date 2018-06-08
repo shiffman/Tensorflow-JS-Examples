@@ -11,7 +11,6 @@ class Data {
   }
 }
 
-
 // Helper class for a Batch of Data: ml5.Batch
 class Batch {
   constructor() {
@@ -23,11 +22,13 @@ class Batch {
   add(data) {
     this.data.push(data);
   }
+
+  toTensor() {
+    this.data = tf.tensor2d(this.data);
+  }
 }
 
-
 class NeuralNetwork {
-
   constructor(inputs, hidden, outputs, lr) {
     this.model = tf.sequential();
     const hiddenLayer = tf.layers.dense({
@@ -62,9 +63,25 @@ class NeuralNetwork {
       } else {
         data = [inputs];
       }
-      const xs = tf.tensor2d(data);
+      const xs = data instanceof tf.Tensor ? data : tf.tensor2d(data);
       return this.model.predict(xs).dataSync();
     });
+  }
+  
+  async predictAsync(inputs) {
+    let ys = tf.tidy(() => {
+      let data;
+      if (inputs instanceof Batch) {
+        data = inputs.data;
+      } else {
+        data = [inputs];
+      }
+      const xs = data instanceof tf.Tensor ? data : tf.tensor2d(data);
+      return this.model.predict(xs);
+    });
+    let res = await ys.data();
+    ys.dispose();
+    return res;
   }
 
   setTrainingData(data) {
@@ -75,7 +92,7 @@ class NeuralNetwork {
     }
   }
 
-  async train(callback, epochs, data) {
+  async train(epochs, data) {
     let xs, ys;
     if (data) {
       xs = tf.tensor2d(data.inputs);
@@ -95,6 +112,5 @@ class NeuralNetwork {
       xs.dispose();
       ys.dispose();
     }
-    callback();
   }
 }

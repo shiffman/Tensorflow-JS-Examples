@@ -1,3 +1,5 @@
+/* The training dataset is so small that duplicating the data would speed up training
+   more efficiently than increasing the number of epochs. */
 let data = {
   inputs: [
     [0, 0],
@@ -11,38 +13,50 @@ let data = {
     [1],
     [0]
   ]
-}
+};
+
+let resolution = 50;
+let batch;
+let results;
+let cols;
+let rows;
 
 let counter = 0;
 
-let training = true;
+let training = false;
 
 function train() {
-  nn.train(finished);
+  if (!training) {
+    training = true;
+    nn.train().then(finished);
+  }
 }
 
 function finished() {
   counter++;
   statusP.html('training pass: ' + counter + '<br>framerate: ' + floor(frameRate()));
-  train();
+  training = false;
+  nn.predictAsync(batch).then(ys => (results = ys));
+  
+  // We need to let the JavaScript event loop tick forward before we call `train()`.
+  setTimeout(train, 0);
 }
 
 let statusP;
 
 function setup() {
   createCanvas(400, 400);
+  noStroke();
+  textAlign(CENTER, CENTER);
+  statusP = createP('0');
+
   nn = new NeuralNetwork(2, 2, 1);
   nn.setTrainingData(data);
-  train();
-  statusP = createP('0');
-}
 
-function draw() {
-  background(0);
-  let batch = new Batch();
-  let resolution = 50;
-  let cols = width / resolution;
-  let rows = height / resolution;
+  // The test input never changes, so we can precalculate it here.
+  batch = new Batch();
+  cols = width / resolution;
+  rows = height / resolution;
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
       let x1 = i / cols;
@@ -51,20 +65,24 @@ function draw() {
       batch.add(inputs);
     }
   }
+  batch.toTensor();
+  results = nn.predict(batch);
+  train();
+}
 
-  let results = nn.predict(batch);
-  //console.log(results);
-
+function draw() {
+  // Technically, this only needs to be redrawn when `predictAsync()` is fulfilled.
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
-      noStroke();
       let y = results[i + j * rows];
       fill(y * 255);
       rect(i * resolution, j * resolution, resolution, resolution);
       fill(255 - y * 255);
-      textAlign(CENTER, CENTER);
-      text(nf(y, 0, 2), i * resolution + resolution / 2, j * resolution + resolution / 2);
+      text(
+        nf(y, 0, 2),
+        i * resolution + resolution / 2,
+        j * resolution + resolution / 2
+      );
     }
   }
-  // }
 }
