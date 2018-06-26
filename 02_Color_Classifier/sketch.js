@@ -15,12 +15,12 @@ let labelList = [
 ]
 
 function preload() {
-  data = loadJSON('colorData.json');
+  data = loadJSON('colorData_small.json');
 }
 
 
 function setup() {
-  //console.log(data.entries.length);
+  console.log(data.entries.length);
 
   let colors = [];
   let labels = [];
@@ -70,9 +70,18 @@ function setup() {
   });
 }
 
-function train() {
-  return model.fit(xs, ys, {
+async function train() {
+  const history = await model.fit(xs, ys, {
     shuffle: true,
-    epochs: 2
+    epochs: 1
   });
+  await tf.nextFrame();
+  return history;
+}
+
+function draw() {
+  background(0);
+  strokeWeight(2);
+  stroke(255);
+  line(frameCount % width, 0, frameCount % width, height);
 }
