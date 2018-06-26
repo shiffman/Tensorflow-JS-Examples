@@ -1,4 +1,6 @@
 let data;
+let model;
+let xs, ys;
 
 let labelList = [
   'red-ish',
@@ -29,19 +31,48 @@ function setup() {
   }
   //console.log(colors);
 
-  let xs = tf.tensor2d(colors);
+  xs = tf.tensor2d(colors);
   //console.log(xs.shape);
   //xs.print();
 
   let labelsTensor = tf.tensor1d(labels, 'int32');
-  labelsTensor.print();
+  //labelsTensor.print();
 
-  let ys = tf.oneHot(labelsTensor, 9);
+  ys = tf.oneHot(labelsTensor, 9).cast('float32');
   labelsTensor.dispose();
 
+  model = tf.sequential();
+  const hidden = tf.layers.dense({
+    units: 16,
+    inputShape: [3],
+    activation: 'sigmoid'
+  });
+  const output = tf.layers.dense({
+    units: 9,
+    activation: 'softmax'
+  });
+  model.add(hidden);
+  model.add(output);
 
+  const LEARNING_RATE = 0.1;
+  const optimizer = tf.train.adam(LEARNING_RATE);
 
+  model.compile({
+    optimizer: optimizer,
+    loss: tf.losses.softmaxCrossEntropy
+  });
 
-  //console.log(labels);
+  xs.print();
+  ys.print();
 
+  train().then(result => {
+    console.log(result.history.loss);
+  });
+}
+
+function train() {
+  return model.fit(xs, ys, {
+    shuffle: true,
+    epochs: 2
+  });
 }
