@@ -55,7 +55,7 @@ function setup() {
   model.add(output);
 
   const LEARNING_RATE = 0.1;
-  const optimizer = tf.train.adam(LEARNING_RATE);
+  const optimizer = tf.train.sgd(LEARNING_RATE);
 
   model.compile({
     optimizer: optimizer,
@@ -73,9 +73,15 @@ function setup() {
 async function train() {
   const history = await model.fit(xs, ys, {
     shuffle: true,
-    epochs: 1
+    epochs: 1000,
+    callbacks: {
+       onBatchEnd: async (batch, logs) => {
+         console.log(logs.loss.toFixed(5));
+         await tf.nextFrame();
+       },
+       onTrainEnd: () => console.log('finished'),
+     },
   });
-  await tf.nextFrame();
   return history;
 }
 
