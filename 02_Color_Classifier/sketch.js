@@ -15,7 +15,7 @@ let labelList = [
 ]
 
 function preload() {
-  data = loadJSON('colorData_small.json');
+  data = loadJSON('colorData.json');
 }
 
 
@@ -54,12 +54,13 @@ function setup() {
   model.add(hidden);
   model.add(output);
 
-  const LEARNING_RATE = 0.1;
+  const LEARNING_RATE = 0.25;
   const optimizer = tf.train.sgd(LEARNING_RATE);
 
   model.compile({
     optimizer: optimizer,
-    loss: tf.losses.softmaxCrossEntropy
+    loss: 'categoricalCrossentropy',
+    metrics: ['accuracy'],
   });
 
   xs.print();
@@ -71,18 +72,21 @@ function setup() {
 }
 
 async function train() {
-  const history = await model.fit(xs, ys, {
+  await model.fit(xs, ys, {
     shuffle: true,
-    epochs: 1000,
+    epochs: 100,
     callbacks: {
-       onBatchEnd: async (batch, logs) => {
-         console.log(logs.loss.toFixed(5));
-         await tf.nextFrame();
-       },
-       onTrainEnd: () => console.log('finished'),
-     },
+      onEpochEnd: (epoch, logs) => {
+        console.log(epoch + ': ' + logs.loss.toFixed(5));
+      },
+      onBatchEnd: async (batch, logs) => {
+        await tf.nextFrame();
+      },
+      onTrainEnd: () => {
+        console.log('finished')
+      },
+    },
   });
-  return history;
 }
 
 function draw() {
