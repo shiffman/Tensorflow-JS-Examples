@@ -1,6 +1,9 @@
 let data;
 let model;
 let xs, ys;
+let rSlider, gSlider, bSlider;
+let labelP;
+let lossP;
 
 let labelList = [
   'red-ish',
@@ -18,9 +21,14 @@ function preload() {
   data = loadJSON('colorData.json');
 }
 
-
 function setup() {
   console.log(data.entries.length);
+  labelP = createP('label');
+  lossP = createP('loss');
+
+  rSlider = createSlider(0, 255, 255);
+  gSlider = createSlider(0, 255, 0);
+  bSlider = createSlider(0, 255, 255);
 
   let colors = [];
   let labels = [];
@@ -66,18 +74,18 @@ function setup() {
   xs.print();
   ys.print();
 
-  train().then(result => {
-    console.log(result.history.loss);
-  });
+  train();
 }
 
 async function train() {
   await model.fit(xs, ys, {
     shuffle: true,
+    validationSplit: 0.1,
     epochs: 100,
     callbacks: {
       onEpochEnd: (epoch, logs) => {
-        console.log(epoch + ': ' + logs.loss.toFixed(5));
+        console.log(epoch);
+        lossP.html('loss: ' + logs.loss.toFixed(5));
       },
       onBatchEnd: async (batch, logs) => {
         await tf.nextFrame();
@@ -90,8 +98,22 @@ async function train() {
 }
 
 function draw() {
-  background(0);
+  let r = rSlider.value();
+  let g = gSlider.value();
+  let b = bSlider.value();
+  background(r, g, b);
   strokeWeight(2);
   stroke(255);
   line(frameCount % width, 0, frameCount % width, height);
+
+  tf.tidy(() => {
+    const input = tf.tensor2d([
+      [r, g, b]
+    ]);
+    let results = model.predict(input);
+    let argMax = results.argMax(1);
+    let index = argMax.dataSync()[0];
+    let label = labelList[index];
+    labelP.html(label);
+  });
 }
