@@ -22,10 +22,9 @@ function preload() {
 }
 
 function setup() {
-  console.log(data.entries.length);
+  // Crude interface
   labelP = createP('label');
   lossP = createP('loss');
-
   rSlider = createSlider(0, 255, 255);
   gSlider = createSlider(0, 255, 0);
   bSlider = createSlider(0, 255, 255);
@@ -37,14 +36,9 @@ function setup() {
     colors.push(col);
     labels.push(labelList.indexOf(record.label));
   }
-  //console.log(colors);
 
   xs = tf.tensor2d(colors);
-  //console.log(xs.shape);
-  //xs.print();
-
   let labelsTensor = tf.tensor1d(labels, 'int32');
-  //labelsTensor.print();
 
   ys = tf.oneHot(labelsTensor, 9).cast('float32');
   labelsTensor.dispose();
@@ -71,13 +65,11 @@ function setup() {
     metrics: ['accuracy'],
   });
 
-  xs.print();
-  ys.print();
-
   train();
 }
 
 async function train() {
+  // This is leaking https://github.com/tensorflow/tfjs/issues/457
   await model.fit(xs, ys, {
     shuffle: true,
     validationSplit: 0.1,
@@ -105,7 +97,6 @@ function draw() {
   strokeWeight(2);
   stroke(255);
   line(frameCount % width, 0, frameCount % width, height);
-
   tf.tidy(() => {
     const input = tf.tensor2d([
       [r, g, b]
