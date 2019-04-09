@@ -49,7 +49,7 @@ class NeuralNetwork {
     const w = this.model.getWeights();
     for (let i = 0; i < w.length; i++) {
       let shape = w[i].shape;
-      let arr = w[i].dataSync();
+      let arr = w[i].dataSync().slice();
       for (let j = 0; j < arr.length; j++) {
         if (random(1) < 0.1) {
           arr[j] = random(-1, 1);
