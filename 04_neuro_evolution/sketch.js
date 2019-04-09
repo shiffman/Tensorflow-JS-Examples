@@ -6,7 +6,7 @@
 // https://youtu.be/cXgA1d_E-jY&
 
 // How big is the population
-let totalPopulation = 500;
+let totalPopulation = 250;
 // All active birds (not yet collided with pipe)
 let activeBirds = [];
 // All birds for any given population

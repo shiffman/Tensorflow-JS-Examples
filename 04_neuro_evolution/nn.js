@@ -1,25 +1,14 @@
-function createModel() {
-  const model = tf.sequential();
-  let hidden = tf.layers.dense({
-    inputShape: [5],
-    units: 8,
-    activation: 'sigmoid'
-  });
-  let output = tf.layers.dense({
-    units: 2,
-    activation: 'sigmoid'
-  });
-  model.add(hidden);
-  model.add(output);
-  return model;
-}
+const INPUTS = 5;
+const HIDDEN = 8;
+const OUTPUTS = 2;
+const mutation = 0.1;
 
 class NeuralNetwork {
   constructor(nn) {
     if (nn instanceof tf.Sequential) {
       this.model = nn;
     } else {
-      this.model = createModel();
+      this.model = NeuralNetwork.createModel();
     }
   }
 
@@ -32,9 +21,25 @@ class NeuralNetwork {
     return y_values;
   }
 
+  static createModel() {
+    const model = tf.sequential();
+    let hidden = tf.layers.dense({
+      inputShape: [INPUTS],
+      units: HIDDEN,
+      activation: 'sigmoid'
+    });
+    let output = tf.layers.dense({
+      units: OUTPUTS,
+      activation: 'softmax'
+    });
+    model.add(hidden);
+    model.add(output);
+    return model;
+  }
+
   // Adding function for neuro-evolution
   copy() {
-    const modelCopy = createModel();
+    const modelCopy = NeuralNetwork.createModel();
     const w = this.model.getWeights();
     for (let i = 0; i < w.length; i++) {
       w[i] = w[i].clone();
@@ -51,9 +56,7 @@ class NeuralNetwork {
       let shape = w[i].shape;
       let arr = w[i].dataSync().slice();
       for (let j = 0; j < arr.length; j++) {
-        if (random(1) < 0.1) {
-          arr[j] = random(-1, 1);
-        }
+        arr[j] = func(arr[j]);
       }
       let newW = tf.tensor(arr, shape);
       w[i] = newW;
@@ -62,12 +65,13 @@ class NeuralNetwork {
   }
 }
 
-// function mutateWeight(x) {
-//   if (random(1) < 0.1) {
-//     let offset = randomGaussian() * 0.5;
-//     let newx = x + offset;
-//     return newx;
-//   } else {
-//     return x;
-//   }
-// }
+// Mutation function to be passed into bird.brain
+function mutateWeight(x) {
+  if (random(1) < mutation) {
+    let offset = randomGaussian() * 0.5;
+    let newx = x + offset;
+    return newx;
+  } else {
+    return x;
+  }
+}

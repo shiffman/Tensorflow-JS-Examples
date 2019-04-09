@@ -5,17 +5,6 @@
 // This flappy bird implementation is adapted from:
 // https://youtu.be/cXgA1d_E-jY&
 
-// Mutation function to be passed into bird.brain
-// function mutate(x) {
-//   if (random(1) < 0.1) {
-//     let offset = randomGaussian() * 0.5;
-//     let newx = x + offset;
-//     return newx;
-//   } else {
-//     return x;
-//   }
-// }
-
 class Bird {
   constructor(brain) {
     // position and size of bird
@@ -32,7 +21,7 @@ class Bird {
     // The Neural Network is the bird's "brain"
     if (brain instanceof NeuralNetwork) {
       this.brain = brain.copy();
-      this.brain.mutate();
+      this.brain.mutate(mutateWeight);
     } else {
       this.brain = new NeuralNetwork();
     }
