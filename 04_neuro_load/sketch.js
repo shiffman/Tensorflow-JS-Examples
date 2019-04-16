@@ -22,7 +22,7 @@ let bird;
 
 function setup() {
   let canvas = createCanvas(600, 400);
-  // tf.setBackend('cpu');
+  tf.setBackend('cpu');
   canvas.parent('canvascontainer');
 
   // Access the interface elements
