@@ -48,6 +48,10 @@ class Bird {
     ellipse(this.x, this.y, this.r * 2, this.r * 2);
   }
 
+  save() {
+    this.brain.save();
+  }
+
   // This is the key function now that decides
   // if it should jump or not jump!
   think(pipes) {

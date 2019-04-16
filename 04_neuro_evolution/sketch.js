@@ -28,6 +28,7 @@ let highScore = 0;
 // Training or just showing the current best
 let runBest = false;
 let runBestButton;
+let saveButton;
 
 function setup() {
   let canvas = createCanvas(600, 400);
@@ -42,12 +43,19 @@ function setup() {
   runBestButton = select('#best');
   runBestButton.mousePressed(toggleState);
 
+  saveButton = select('#save');
+  saveButton.mousePressed(saveModel);
+
   // Create a population
   for (let i = 0; i < totalPopulation; i++) {
     let bird = new Bird();
     activeBirds[i] = bird;
     allBirds[i] = bird;
   }
+}
+
+function saveModel() {
+  bestBird.save();
 }
 
 // Toggle the state of the simulation

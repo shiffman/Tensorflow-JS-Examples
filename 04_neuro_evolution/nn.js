@@ -16,6 +16,10 @@ class NeuralNetwork {
     this.model.dispose();
   }
 
+  save() {
+    this.model.save('downloads://bird-brain');
+  }
+
   // Synchronous for now
   predict(input_array) {
     // console.log(input_array);

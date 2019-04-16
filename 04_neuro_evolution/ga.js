@@ -28,7 +28,9 @@ function nextGeneration() {
 
   // dispose of old birds
   for (let bird of allBirds) {
-    bird.dispose();
+    if (bird !== bestBird) {
+      bird.dispose();
+    }
   }
 
   // Copy those birds to another array
