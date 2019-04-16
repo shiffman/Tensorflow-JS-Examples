@@ -20,4 +20,4 @@ This repo is experimental and in progress. It is an "MNIST"-style classification
 ### Neuro-Evolution
 * [Flappy Bird Demo: Learning](https://shiffman.github.io/Tensorflow-JS-Examples/04_neuro_evolution_flappy/) 
 * [Flappy Bird Demo: Loading Saved Model](https://shiffman.github.io/Tensorflow-JS-Examples/04_neuro_load_flappy/) 
-* [Steering Ecosystem Simulation Demo](https://shiffman.github.io/Tensorflow-JS-Examples/04_neuro_evolution_steering/) 
+* [Steering Ecosystem Simulation Demo](https://shiffman.github.io/Tensorflow-JS-Examples/05_neuro_evolution_steering/) 
