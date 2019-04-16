@@ -1,3 +1,7 @@
+// Daniel Shiffman
+// Nature of Code
+// https://github.com/nature-of-code/noc-syllabus-S19
+
 const INPUTS = 5;
 const HIDDEN = 8;
 const OUTPUTS = 2;

@@ -1,6 +1,6 @@
 // Daniel Shiffman
-// Nature of Code 2018
-// https://github.com/shiffman/NOC-S18
+// Nature of Code
+// https://github.com/nature-of-code/noc-syllabus-S19
 
 // Evolutionary "Steering Behavior" Simulation
 

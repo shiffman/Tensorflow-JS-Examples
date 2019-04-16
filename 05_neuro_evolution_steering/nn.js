@@ -1,3 +1,7 @@
+// Daniel Shiffman
+// Nature of Code
+// https://github.com/nature-of-code/noc-syllabus-S19
+
 class NeuralNetwork {
   constructor(a, b, c, d) {
     if (a instanceof tf.Sequential) {

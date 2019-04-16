@@ -1,13 +1,12 @@
 // Daniel Shiffman
-// Nature of Code: Intelligence and Learning
-// https://github.com/shiffman/NOC-S17-2-Intelligence-Learning
+// Nature of Code
+// https://github.com/nature-of-code/noc-syllabus-S19
 
 // This flappy bird implementation is adapted from:
 // https://youtu.be/cXgA1d_E-jY&
 
 class Pipe {
   constructor() {
-
     // How big is the empty space
     let spacing = 125;
     // Where is th center of the empty space
@@ -26,7 +25,7 @@ class Pipe {
 
   // Did this pipe hit a bird?
   hits(bird) {
-    if ((bird.y - bird.r) < this.top || (bird.y + bird.r) > (height - this.bottom)) {
+    if (bird.y - bird.r < this.top || bird.y + bird.r > height - this.bottom) {
       if (bird.x > this.x && bird.x < this.x + this.w) {
         return true;
       }

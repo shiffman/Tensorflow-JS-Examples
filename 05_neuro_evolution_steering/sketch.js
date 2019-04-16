@@ -1,6 +1,6 @@
 // Daniel Shiffman
-// Nature of Code: Intelligence and Learning
-// https://github.com/shiffman/NOC-S17-2-Intelligence-Learning
+// Nature of Code
+// https://github.com/nature-of-code/noc-syllabus-S19
 
 // Evolutionary "Steering Behavior" Simulation
 
