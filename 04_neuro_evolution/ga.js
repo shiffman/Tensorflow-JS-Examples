@@ -25,6 +25,12 @@ function nextGeneration() {
   normalizeFitness(allBirds);
   // Generate a new set of birds
   activeBirds = generate(allBirds);
+
+  // dispose of old birds
+  for (let bird of allBirds) {
+    bird.dispose();
+  }
+
   // Copy those birds to another array
   allBirds = activeBirds.slice();
 }

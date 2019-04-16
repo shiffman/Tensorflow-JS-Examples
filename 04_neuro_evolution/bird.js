@@ -37,6 +37,10 @@ class Bird {
     return new Bird(this.brain);
   }
 
+  dispose() {
+    this.brain.dispose();
+  }
+
   // Display the bird
   show() {
     fill(255, 100);

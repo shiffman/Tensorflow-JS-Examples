@@ -12,13 +12,19 @@ class NeuralNetwork {
     }
   }
 
+  dispose() {
+    this.model.dispose();
+  }
+
   // Synchronous for now
   predict(input_array) {
     // console.log(input_array);
-    let xs = tf.tensor([input_array]);
-    let ys = this.model.predict(xs);
-    let y_values = ys.dataSync();
-    return y_values;
+    return tf.tidy(() => {
+      let xs = tf.tensor([input_array]);
+      let ys = this.model.predict(xs);
+      let y_values = ys.dataSync();
+      return y_values;
+    });
   }
 
   static createModel() {
@@ -39,29 +45,33 @@ class NeuralNetwork {
 
   // Adding function for neuro-evolution
   copy() {
-    const modelCopy = NeuralNetwork.createModel();
-    const w = this.model.getWeights();
-    for (let i = 0; i < w.length; i++) {
-      w[i] = w[i].clone();
-    }
-    modelCopy.setWeights(w);
-    const nn = new NeuralNetwork(modelCopy);
-    return nn;
+    return tf.tidy(() => {
+      const modelCopy = NeuralNetwork.createModel();
+      const w = this.model.getWeights();
+      for (let i = 0; i < w.length; i++) {
+        w[i] = w[i].clone();
+      }
+      modelCopy.setWeights(w);
+      const nn = new NeuralNetwork(modelCopy);
+      return nn;
+    });
   }
 
   // Accept an arbitrary function for mutation
   mutate(func) {
-    const w = this.model.getWeights();
-    for (let i = 0; i < w.length; i++) {
-      let shape = w[i].shape;
-      let arr = w[i].dataSync().slice();
-      for (let j = 0; j < arr.length; j++) {
-        arr[j] = func(arr[j]);
+    tf.tidy(() => {
+      const w = this.model.getWeights();
+      for (let i = 0; i < w.length; i++) {
+        let shape = w[i].shape;
+        let arr = w[i].dataSync().slice();
+        for (let j = 0; j < arr.length; j++) {
+          arr[j] = func(arr[j]);
+        }
+        let newW = tf.tensor(arr, shape);
+        w[i] = newW;
       }
-      let newW = tf.tensor(arr, shape);
-      w[i] = newW;
-    }
-    this.model.setWeights(w);
+      this.model.setWeights(w);
+    });
   }
 }
 
