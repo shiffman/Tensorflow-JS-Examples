@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>NeuroEvolution Steering</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.4/dist/tf.min.js"></script>
+  </head>
+  <body>
+    <script src="nn.js"></script>
+    <script src="sketch.js"></script>
+    <script src="vehicle.js"></script>
+    <script src="obstacle.js"></script>
+    <div id="canvascontainer"></div>
+    <div id="interface">
+      <p>
+        speed: <input id="speedSlider" type="range" min="1" max="10" value="1"> <span id="speed">1</span>
+      </p>
+      <p>
+        debug: <input id="debug" type="checkbox"></input>
+      </p>
+    </div>
+  
+  </body>
+</html>
+
