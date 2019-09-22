@@ -70,6 +70,9 @@ function setup() {
 
 async function train() {
   // This is leaking https://github.com/tensorflow/tfjs/issues/457
+  console.log(model);
+  console.log(xs);
+  console.log(ys);
   await model.fit(xs, ys, {
     shuffle: true,
     validationSplit: 0.1,
